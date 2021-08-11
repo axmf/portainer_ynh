@@ -38,13 +38,14 @@ dockerapp_ynh_checkinstalldocker () {
         if [ $ret == 127 ]
 	then
 		# install
-		#check if it's already installed!
-		#curl -sSL https://get.docker.com | sh
-		#systemctl enable docker --quiet
+		#TODO: check if it's already installed!
+		curl -sSL https://get.docker.com | sh
+		systemctl enable docker --quiet
 		#curl -L https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 		
-		#sudo curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
- 		#sudo chmod +x /usr/local/bin/docker-compose
+		#TODO: install the latest
+		sudo curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
+ 		sudo chmod +x /usr/local/bin/docker-compose
 
 		#for d in overlay2 overlay devicemapper aufs vfs
 		#do
