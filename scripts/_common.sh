@@ -40,7 +40,10 @@ dockerapp_ynh_checkinstalldocker () {
 		# install
 		curl -sSL https://get.docker.com | sh
 		systemctl enable docker --quiet
-		curl -L https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+		#curl -L https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+		
+		sudo curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
+ 		sudo chmod +x /usr/local/bin/docker-compose
 
 		#for d in overlay2 overlay devicemapper aufs vfs
 		#do
@@ -97,9 +100,10 @@ dockerapp_ynh_run () {
 	# 	[ "$ret" == "125" ] && docker inspect $app | grep "Error" | grep -q "iptables failed" && systemctl restart docker && return 0
 	# 	ynh_die "Sorry ! App cannot start with docker. Please check docker logs."
 	# fi
-	[ "$architecture" == "amd64" ] && image=portainer/portainer-ce:${portainer_version}
-	[ "$architecture" == "i386" ]  && image=portainer/portainer-ce:linux-386-${portainer_version}
-	[ "$architecture" == "armhf" ] && image=portainer/portainer-ce:linux-arm-${portainer_version}
+	#We don't specify a version because sometimes the latest is no available for all architectures
+	[ "$architecture" == "amd64" ] && image=portainer/portainer-ce
+	[ "$architecture" == "i386" ]  && image=portainer/portainer-ce:linux-386
+	[ "$architecture" == "armhf" ] && image=portainer/portainer-ce:linux-arm
 	[ -z $image ] && ynh_die "Sorry, your ${architecture} architecture is not supported ..."
 
 	options="-p 127.0.0.1:$port:9000 -v ${data_path}/data:/data -v /var/run/docker.sock:/var/run/docker.sock"
