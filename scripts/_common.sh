@@ -23,10 +23,10 @@ dockerapp_ynh_incontainer () {
 # docker driver setter
 dockerapp_ynh_driversetter () {
 	echo -e "{\n\t\"debug\": false,\n\t\"storage-driver\": \"$1\"\n}\n" > /etc/docker/daemon.json
-	systemctl stop docker >/dev/null 2>&1
+	ynh_systemd_action stop docker >/dev/null 2>&1
 	ynh_secure_remove /var/lib/docker
 	mkdir -p /var/lib/docker
-	systemctl start docker >/dev/null 2>&1
+	ynh_systemd_action start docker >/dev/null 2>&1
 	sleep 30
 	echo $(sh _dockertest.sh)
 }
@@ -44,8 +44,9 @@ dockerapp_ynh_checkinstalldocker () {
 		#curl -L https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 		
 		#TODO: install the latest
-		sudo curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
- 		sudo chmod +x /usr/local/bin/docker-compose
+		
+		curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
+ 		chmod +x /usr/local/bin/docker-compose
 
 		#for d in overlay2 overlay devicemapper aufs vfs
 		#do
@@ -123,5 +124,6 @@ dockerapp_ynh_rm () {
 
 # Regenerate SSOwat conf
 dockerapp_ynh_reloadservices () {
+	#TODO do we need this?
 	yunohost app ssowatconf
 }
