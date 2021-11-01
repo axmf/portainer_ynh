@@ -41,6 +41,7 @@ dockerapp_ynh_checkinstalldocker () {
 		#TODO: check if it's already installed!
 		curl -sSL https://get.docker.com | sh
 		systemctl enable docker --quiet
+		sudo usermod -aG docker ${USER}
 		#curl -L https://github.com/docker/compose/releases/download/${version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 		
 		#TODO: install the latest
